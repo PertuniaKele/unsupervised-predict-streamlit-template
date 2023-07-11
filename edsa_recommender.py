@@ -105,22 +105,10 @@ def main():
     if page_selection == "Instructions":
         st.title("How to use the Recommender App")
         st.write("To get the best out of this App, you need to carefully follow the steps below.")
-	st.markdown("""
-		Steps:
-		* **step 1** 
-		* **Step 2**
-		* **Step 3**
-		* **Step 4**
-		* **Step 5**
-		* **Step 6**
-		""")
 
     if page_selection == "Visualise Your Data":
         st.title("Exploratory Data Analysis")
         st.write("We are going to put some visuals")
-	st.markdown("""
-		And explain each visual
-		""")
 
     # You may want to add more sections here for aspects such as an EDA,
     # or to provide your business pitch.
