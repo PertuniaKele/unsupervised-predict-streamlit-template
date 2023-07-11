@@ -45,27 +45,13 @@ def main():
 
     # DO NOT REMOVE the 'Recommender System' option below, however,
     # you are welcome to add more options to enrich your app.
-    page_options = ["Instructions","Exploratory Data Analysis","Movie Recommender", "About Us"]
+    page_options = ["Instructions","Visualise Your Data","Recommender System", "About Us"]
 
     # -------------------------------------------------------------------
     # ----------- !! THIS CODE MUST NOT BE ALTERED !! -------------------
     # -------------------------------------------------------------------
     page_selection = st.sidebar.selectbox("Choose Option", page_options)
-    if page_selection == "Instructions":
-        st.title("How to use the Recommender App")
-        st.write("To get the best out of this App, you need to carefully follow the steps below.")
-	st.markdown("""
-		Steps:
-		* **step 1** 
-		* **Step 2**
-		* **Step 3**
-		* **Step 4**
-		* **Step 5**
-		* **Step 6**
-		""")
-
-    # You may want to add more sections here for aspects such as an EDA,
-    # or to provide your business pitch.
+    
     if page_selection == "Recommender System":
         # Header contents
         st.write('# Movie Recommender Engine')
@@ -115,8 +101,31 @@ def main():
     # -------------------------------------------------------------------
 
     # ------------- SAFE FOR ALTERING/EXTENSION -------------------
-    if page_selection == "Solution Overview":
-        st.title("Solution Overview")
+
+    if page_selection == "Instructions":
+        st.title("How to use the Recommender App")
+        st.write("To get the best out of this App, you need to carefully follow the steps below.")
+	st.markdown("""
+		Steps:
+		* **step 1** 
+		* **Step 2**
+		* **Step 3**
+		* **Step 4**
+		* **Step 5**
+		* **Step 6**
+		""")
+
+    if page_selection == "Visualise Your Data":
+        st.title("Exploratory Data Analysis")
+        st.write("We are going to put some visuals")
+	st.markdown("""
+		And explain each visual
+		""")
+
+    # You may want to add more sections here for aspects such as an EDA,
+    # or to provide your business pitch.
+    if page_selection == "About Us":
+        st.title("Our Team And What We Do")
         st.write("Describe your winning approach on this page")
 
     # You may want to add more sections here for aspects such as an EDA,
