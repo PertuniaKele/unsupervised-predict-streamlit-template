@@ -106,7 +106,7 @@ def main():
     if page_selection == "Home":
         st.title('Home')
         st.write('#')
-        st.image('pictures/appname.png',use_column_width=True)
+        st.image('pictures/company.jpg',use_column_width=True)
 
     if page_selection == "Exploratory Data Analysis":
         st.title('Visualising Your Data')
