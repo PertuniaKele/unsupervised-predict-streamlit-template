@@ -156,7 +156,7 @@ def main():
 
     # OUR solution
     if page_selection == "Solution Overview":
-
+	st.image('pictures/company.jpg',use_column_width=True)
         st.title("Solution Overview")
         st.write(""" After weighing on the differences between the collaborative filtering and content based filtering, the former approach wins.
 	The criteria is not only based on the score but the relevance of the movies.""")
