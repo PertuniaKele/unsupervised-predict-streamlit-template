@@ -110,9 +110,7 @@ def main():
 
     if page_selection == "Visualise Your Data":
         st.title('Exploratory Data Analysis')
-        st.write('Data visualisation gives us a clear idea of what the information means by giving it visual context through maps or graphs. 
-	This makes the data more natural for the human mind to comprehend and therefore makes it easier to identify trends, 
- 	patterns, and outliers within large data sets.')
+        st.write('Data visualisation gives us a clear idea of what the information means by giving it visual context through maps or graphs. This makes the data more natural for the human mind to comprehend and therefore makes it easier to identify trends, patterns, and outliers within large data sets.')
         st.write('### Distribution of Ratings per movie')
         st.write('#')
         st.image('pictures/tail.PNG',use_column_width=True)
@@ -160,8 +158,8 @@ def main():
     if page_selection == "Solution Overview":
 
         st.title("Solution Overview")
-        st.write(""" After weighing on the differences between the collaborative filtering and content based filtering, the former approach wins. 
-	The criteria is not only based on the score but the relevance of the movies.
+        st.write(""" After weighing on the differences between the collaborative filtering and content based filtering, the former approach wins.
+	The criteria is not only based on the score but the relevance of the movies.""")
 
 
 
