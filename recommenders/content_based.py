@@ -31,15 +31,43 @@
 import os
 import pandas as pd
 import numpy as np
+import streamlit as st
+from time import time
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import CountVectorizer
 
 # Importing data
-movies = pd.read_csv('resources/data/movies.csv', sep = ',')
-ratings = pd.read_csv('resources/data/ratings.csv')
-movies.dropna(inplace=True)
+tload0 = time()
 
-def data_preprocessing(subset_size):
+movies = pd.read_csv('resources/data/movies.csv', sep = ',')
+clean_text = pd.read_csv('resources/data/movie_text.csv')
+
+tload1 = time()
+
+print("Finished loading data in " + str(tload1-tload0) + "s.")
+
+data = clean_text[:27000]
+
+tvec0 = time()
+
+# Instantiating and generating the count matrix
+count_vec = CountVectorizer(analyzer='word', stop_words="english", ngram_range=(1,1))
+count_matrix = count_vec.fit_transform(data['final_text'])
+
+tvec1 = time()
+
+print("Finished vectorising data in " + str(tvec1-tvec0) + "s.")
+
+tsim0 = time()
+
+cosine_sim = cosine_similarity(count_matrix, count_matrix)
+
+tsim1 = time()
+
+print("Finished similarity matrix in " + str(tsim1-tsim0) + "s.")
+
+@st.cache_data
+def data_preprocessing(subset_size, clean_data):
     """Prepare data for use within Content filtering algorithm.
 
     Parameters
@@ -54,12 +82,11 @@ def data_preprocessing(subset_size):
 
     """
 
-    # Split genre data into individual words.
-    movies['keyWords'] = movies['genres'].str.replace('|', ' ')
-    
     # Subset of the data
-    movies_subset = movies[:subset_size]
-    
+    #movies_subset = movies[:subset_size]
+
+    movies_subset = clean_data[:subset_size]
+
     return movies_subset
 
 # !! DO NOT CHANGE THIS FUNCTION SIGNATURE !!
@@ -81,18 +108,12 @@ def content_model(movie_list,top_n=10):
         Titles of the top-n movie recommendations to the user.
 
     """
-    
+
     # Initializing the empty list of recommended movies
     recommended_movies = []
-    data = data_preprocessing(27000)
-    
-    # Instantiating and generating the count matrix
-    count_vec = CountVectorizer()
-    count_matrix = count_vec.fit_transform(data['keyWords'])
-    indices = pd.Series(data['title'])
-    cosine_sim = cosine_similarity(count_matrix, count_matrix)
-    
+
     # Getting the index of the movie that matches the title
+    indices = pd.Series(data['title'])
     idx_1 = indices[indices.str.strip().str.lower() == movie_list[0].strip().lower()].index[0]
     idx_2 = indices[indices.str.strip().str.lower() == movie_list[1].strip().lower()].index[0]
     idx_3 = indices[indices.str.strip().str.lower() == movie_list[2].strip().lower()].index[0]
