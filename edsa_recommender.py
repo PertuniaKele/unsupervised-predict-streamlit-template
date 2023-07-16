@@ -142,7 +142,7 @@ def main():
     # or to provide your business pitch.
     
     if page_selection == "About App":
-        st.title("Company")
+        st.title("BUZZ HIVE Analytics")
         st.image('pictures/our_app.jpg',use_column_width=True)
         st.write("""Watching a movie is fun, but finding the next movie is a stressful experience. You scroll Netflix endlessly, watch trailers, wasting about an hour 
         but you still can't decide what to watch; ring a bell?. OUR Recommendation system got you; it answers the "what to watch next?" question. Say goodbye to
