@@ -45,7 +45,8 @@ def main():
 
     # DO NOT REMOVE the 'Recommender System' option below, however,
     # you are welcome to add more options to enrich your app.
-    page_options = ["Instructions","Visualise Your Data","Recommender System", "About Us"]
+    page_options = ["Home","Exploratory Data Analysis","Recommender System", "Solution Overview","About App"]
+
 
     # -------------------------------------------------------------------
     # ----------- !! THIS CODE MUST NOT BE ALTERED !! -------------------
@@ -102,19 +103,66 @@ def main():
 
     # ------------- SAFE FOR ALTERING/EXTENSION -------------------
 
-    if page_selection == "Instructions":
-        st.title("How to use the Recommender App")
-        st.write("To get the best out of this App, you need to carefully follow the steps below.")
+    if page_selection == "Home":
+        st.title('Home')
+        st.write('#')
+        st.image('pictures/appname.png',use_column_width=True)
 
-    if page_selection == "Visualise Your Data":
-        st.title("Exploratory Data Analysis")
-        st.write("We are going to put some visuals")
+    if page_selection == "Exploratory Data Analysis":
+        st.title('Visualising Your Data')
+        st.write('Data visualization gives us a clear idea of what the information means by giving it visual context through maps or graphs. This makes the data more natural for the human mind to comprehend and therefore makes it easier to identify trends, patterns, and outliers within large data sets.')
+        st.write('### Distribution of Ratings per movie')
+        st.write('#')
+        st.image('pictures/tail.PNG',use_column_width=True)
+        st.write('#')
+        st.write('The plot plot shows the distribution of ratings/movie popularity with 653 popular movies and 45760 unpopular movies.')
+        st.write('##')
+        st.write('### Movie Ratings from the Users')
+        st.write('#')
+        st.image('pictures/Dis.JPG',use_column_width=True)
+        st.write('#')
+        st.write(""" 
+        Most movies recieved ratings of 4, while others recieved less. It was expected that there would be a normal distrubtion with a mean rating of 3.
+        Instead, we observe that users tend to rate movies quite favourably and tend to avoid negative ratings. This skew might be explained by the tendency
+        of users to rate movies they liked.In other words, if a user doesn't like a movie, it is unlikely that they will watch it through to the end, let alone rate it.
+        """)
+        st.write('### Movie Genres')
+        st.write('#')
+        st.image('pictures/populargenres.jpeg')
+        st.write('#')
+        st.write("""Drama, Comedy and Action are top 3 most common movie genres. """)
+        st.write('#')
+        st.write('### Popular cast')
+        st.write('#')
+        st.image('pictures/popularcast.jpeg')
+        st.write('#')
+        st.write("""The most well-known cast members are Samuel L. Jackson 
+	and Steve Buscemi, with the remaining members having a slight variation in recognition.""")
+        st.write('#')
+        st.write('### Movie Runtime')
+        st.write('#')
+        st.image('pictures/longtail.jpeg',use_column_width=True)
+        st.write('An average movie plays for 100 minutes.')
+        st.write('### Top Tags')
+        st.write('#')
+        st.image('pictures/Toptags.JPG',use_column_width=True)
+        st.write('#')
+        st.write("""Sci-fi is the most popular tag while classic has the least number of counts. Science fiction movies have pioneered the development of artificial intelligence, science and technology in general.""")
 
     # You may want to add more sections here for aspects such as an EDA,
     # or to provide your business pitch.
-    if page_selection == "About Us":
-        st.title("Our Team And What We Do")
-        st.write("Describe your winning approach on this page")
+    if page_selection == "About App":
+        st.title("Company")
+        st.image('pictures/our_app.jpg',use_column_width=True)
+        st.write("""Watching a movie is fun, but finding the next movie is a stressful experience. You scroll Netflix endlessly, watch trailers, wasting about an hour 
+        but you still can't decide what to watch; ring a bell?. TEQSPHERE Recommendation system got you; it answers the "what to watch next?" question. Say goodbye to
+         wasting time searching for what to watch next, and hello to TEQSPHERE movie recommendations that display only movies relevant to you.""")  
+        st.write('#') 
+        st.title('Why choose OUR APP ?') 
+        st.write(""" - Great User Interface; Unique, Appealing And Easy To Use""")
+        st.write(""" - Fast Loading Time and High Performance.""")
+        st.write(""" - OUR APP asks the user to select three favourite movies, and then recommends ten movies similar to their favourite movies. """)
+        st.write(""" - You choose your preferred recommendation method; content-based or collaborative-based. """)
 
     # You may want to add more sections here for aspects such as an EDA,
     # or to provide your business pitch.
