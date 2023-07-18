@@ -31,14 +31,21 @@ import streamlit as st
 # Data handling dependencies
 import pandas as pd
 import numpy as np
+import seaborn as sns
+import plotly.express as px
+import matplotlib.pyplot as plt
 
 # Custom Libraries
 from utils.data_loader import load_movie_titles
 from recommenders.collaborative_based import collab_model
 from recommenders.content_based import content_model
 
+st.set_page_config(page_title="Home" ,layout="wide", initial_sidebar_state="auto")
+
 # Data Loading
 title_list = load_movie_titles('resources/data/movies.csv')
+train_data = pd.read_csv("resources/data/train.csv")
+movies = pd.read_csv("resources/data/movies.csv")
 
 # App declaration
 def main():
@@ -109,35 +116,126 @@ def main():
         st.image('pictures/company.jpg',use_column_width=True)
 
     if page_selection == "Visualise Your Data":
-        st.title('Exploratory Data Analysis')
-        st.write('Data visualisation gives us a clear idea of what the information means by giving it visual context through maps or graphs. This makes the data more natural for the human mind to comprehend and therefore makes it easier to identify trends, patterns, and outliers within large data sets.')
-        st.write('### Distribution of Ratings per movie')
-        st.write('#')
-        st.image('pictures/tail.PNG',use_column_width=True)
-        st.write('#')
-        st.write('The plot plot shows the distribution of ratings/movie popularity with 653 popular movies and 45760 unpopular movies.')
-        st.write('##')
-        st.write('### Movie Ratings from the Users')
-        st.write('#')
-        st.image('pictures/Dis.JPG',use_column_width=True)
-        st.write('#')
-        st.write(""" 
-        Most movies received ratings of 4, while others received less. It was expected that there would be a normal distrubtion with a mean rating of 3.
-        Instead, we observe that users tend to rate movies quite favourably and tend to avoid negative ratings. This skew might be explained by the tendency
-        of users to rate movies they liked.In other words, if a user doesn't like a movie, they are not likey to rate it.
-        """)
-        st.write('### Movie Genres')
-        st.write('#')
-        st.image('pictures/populargenres.jpeg')
-        st.write('#')
-        st.write("""Drama, Comedy and Action are top 3 most common movie genres. """)
-        st.write('#')
-        st.write('### Popular cast')
-        st.write('#')
-        st.write('### Movie Runtime')
-        st.write('#')
-        st.image('pictures/longtail.jpeg',use_column_width=True)
-        st.write('On average a movie plays for 100 minutes/ an hour and 40 minutes.')
+        st.title('Visualise Your Data')
+        
+        #movies_df = movies.copy()
+
+        #print(movies.head())
+
+        col1, col2 = st.columns((1,1))
+
+        movies['release_year'] = movies['title'].str.extract(r'\((\d{4})\)')
+        movies['year'] = pd.to_numeric(movies['release_year'])
+        movies.drop("release_year", inplace=True, axis=1)
+
+        movies['movie_title'] = movies['title'].str.replace(r'\s*\(\d{4}\)', '', regex=True)
+
+        #print(movies.head())
+
+        movies['genres_split'] = movies['genres'].str.split('|')
+        movies.drop("genres", inplace=True, axis=1)
+
+        #print(movies.head())
+
+        movies_df = movies.explode('genres_split')
+
+        #print("EXPLODE")
+        #print(movies_df.head())
+
+        #st.header('Movie Genre Visualization')
+        col1.subheader('Movie Genre Distribution')
+
+        year_range = (int(movies_df['year'].min()), int(movies_df['year'].max()))
+        selected_year = col1.slider('Select Year', min_value=year_range[0], max_value=year_range[1], value=year_range)
+
+        #print("YEAR RANGE:", selected_year[0], "", selected_year[1])
+
+        default_genres = movies_df['genres_split'].unique()
+        #selected_genres = st.multiselect('Select Genres', default_genres, default=movies_df['genres_split'].unique())
+
+        placeholder = st.sidebar.empty()
+        selected_genres = placeholder.multiselect('Select Genres', default_genres, default=movies_df['genres_split'].unique(), key="1")
+
+        #if st.button('Reset Genres'):
+        #    selected_genres = default_genres
+            #st.experimental_rerun()
+
+        if st.sidebar.button("Reset Genres"):
+            placeholder.empty()
+            selected_genres = placeholder.multiselect('Select Genres', default_genres, default=movies_df['genres_split'].unique(), key="2")
+
+        #filtered_df = movies_df[movies_df['year'] == selected_year]
+
+        #out = movies_df["year"].isin(range(selected_year[0], selected_year[1]))
+        out_year = movies_df["year"].isin(range(selected_year[0], selected_year[1]))
+        out_genre = movies_df['genres_split'].isin(selected_genres)
+        filtered_df = movies_df[out_year & out_genre]
+
+        #filtered_df = movies_df[out]
+
+        #print(filtered_df.head())
+
+        genre_counts = filtered_df['genres_split'].value_counts()
+
+        plt.figure(figsize=(8, 4))
+        plt.bar(genre_counts.index, genre_counts.values)
+        plt.xlabel('Genre')
+        plt.ylabel('Number of Movies')
+        plt.title(f'Movie Genre Distribution in {selected_year}')
+        plt.xticks(rotation=90)
+        col1.pyplot(plt)
+
+        #genre_counts = filtered_df.groupby('genres_split').size()
+
+        #fig = px.bar(genre_counts, x=genre_counts.index, y=genre_counts.values, labels={'x': 'Genre', 'y': 'Number of Movies'}, title=f'Movie Genre Distribution in {selected_year}')
+        #st.plotly_chart(fig)
+
+        col2.subheader('User Ratings')
+
+        train_data['DateTime'] = pd.to_datetime(train_data['timestamp'], unit='s')
+        train_data['Year'] = train_data['DateTime'].dt.year
+
+        year_range_train = (int(train_data['Year'].min()), int(train_data['Year'].max()))
+        selected_year_train = col2.slider('Select Year', min_value=year_range_train[0], max_value=year_range_train[1], value=year_range_train)
+
+        out_year_train = train_data['Year'].isin(range(selected_year_train[0], selected_year_train[1]))
+
+        filtered_train = train_data[out_year_train]
+
+        print(train_data.head())
+
+        plt.figure(figsize=(8, 4))
+        ax = sns.countplot(data=filtered_train, x='rating', palette='viridis')#, order=train_data['rating'].value_counts())
+
+        #total_ratings = train_data.shape[0]
+        #total_height = len(train_data)   
+
+        ax.set_yticklabels([tick for tick in ax.get_yticks()])
+
+        for p in ax.patches:
+            percentage = int(p.get_height())
+            ax.annotate(percentage, (p.get_x() + p.get_width() / 2., p.get_height()),
+                ha='center', va='center', xytext=(0, 5), textcoords='offset points')
+
+        plt.xlabel('Rating Category')
+        plt.ylabel('Count')
+        plt.title('Number of Ratings for Each Rating Category')
+        plt.xticks(rotation=0)
+        col2.pyplot(plt)
+
+        st.subheader('Movies Dataframe')
+
+        movie_count_plot = train_data.groupby('movieId')['rating'].agg(['count', 'mean']).reset_index()
+
+        merged_movie_plot = pd.merge(movies, movie_count_plot, on='movieId', how="left")
+        merged_movie_plot.drop("title", inplace=True, axis=1)
+        #merged_movie_plot.drop("title", inplace=True, axis=1)
+
+        st.dataframe(merged_movie_plot, width=1560, column_config={"movieId": "Movie ID", "year": "Year", "movie_title": "Movie Title", "genres_split": "Genres", "count": "Number of Ratings", "mean":"Average Rating"}, hide_index=True)
+
+
+
+
     # You may want to add more sections here for aspects such as an EDA,
     # or to provide your business pitch.
     

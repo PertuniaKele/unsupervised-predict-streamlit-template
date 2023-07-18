@@ -136,3 +136,7 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+# Large csv files
+#/resources/data/tags.csv
+/resources/data/train.csv
