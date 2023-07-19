@@ -138,4 +138,4 @@ dmypy.json
 cython_debug/
 
 # Large csv files
-#/resources/data/tags.csv
+/resources/data/train.csv
