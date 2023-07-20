@@ -37,34 +37,73 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import CountVectorizer
 
 # Importing data
-tload0 = time()
 
-movies = pd.read_csv('resources/data/movies.csv', sep = ',')
-clean_text = pd.read_csv('resources/data/movie_text.csv')
+@st.cache_data
+def load_content_data():
+    tload0 = time()
 
-tload1 = time()
+    movies_db = pd.read_csv('resources/data/movies.csv', sep = ',')
+    clean_text = pd.read_csv('resources/data/movie_text.csv')
 
-print("Finished loading data in " + str(tload1-tload0) + "s.")
+    tload1 = time()
 
-data = clean_text[:27000]
+    print("Finished loading data in " + str(tload1-tload0) + "s.")
 
-tvec0 = time()
+    return movies_db, clean_text
+
+#tload0 = time()
+
+#movies = pd.read_csv('resources/data/movies.csv', sep = ',')
+#clean_text = pd.read_csv('resources/data/movie_text.csv')
+
+#tload1 = time()
+
+#print("Finished loading data in " + str(tload1-tload0) + "s.")
+
+#@st.cache_data
+def vec_sim(data):
+    
+    #data = clean_text[:27000]
+
+    tvec0 = time()
+
+    # Instantiating and generating the count matrix
+    count_vec = CountVectorizer(analyzer='word', stop_words="english", ngram_range=(1,1))
+    count_matrix = count_vec.fit_transform(data['final_text'])
+
+    tvec1 = time()
+
+    print("Finished vectorising data in " + str(tvec1-tvec0) + "s.")
+
+    tsim0 = time()
+
+    cosine_sim = cosine_similarity(count_matrix, count_matrix)
+
+    tsim1 = time()
+
+    print("Finished similarity matrix in " + str(tsim1-tsim0) + "s.")
+
+    return cosine_sim
+
+#data = clean_text[:27000]
+
+#tvec0 = time()
 
 # Instantiating and generating the count matrix
-count_vec = CountVectorizer(analyzer='word', stop_words="english", ngram_range=(1,1))
-count_matrix = count_vec.fit_transform(data['final_text'])
+#count_vec = CountVectorizer(analyzer='word', stop_words="english", ngram_range=(1,1))
+#count_matrix = count_vec.fit_transform(data['final_text'])
 
-tvec1 = time()
+#tvec1 = time()
 
-print("Finished vectorising data in " + str(tvec1-tvec0) + "s.")
+#print("Finished vectorising data in " + str(tvec1-tvec0) + "s.")
 
-tsim0 = time()
+#tsim0 = time()
 
-cosine_sim = cosine_similarity(count_matrix, count_matrix)
+#cosine_sim = cosine_similarity(count_matrix, count_matrix)
 
-tsim1 = time()
+#tsim1 = time()
 
-print("Finished similarity matrix in " + str(tsim1-tsim0) + "s.")
+#print("Finished similarity matrix in " + str(tsim1-tsim0) + "s.")
 
 @st.cache_data
 def data_preprocessing(subset_size, clean_data):
@@ -108,6 +147,12 @@ def content_model(movie_list,top_n=10):
         Titles of the top-n movie recommendations to the user.
 
     """
+
+    movies, clean_db = load_content_data()
+
+    data = data_preprocessing(27000, clean_db)
+
+    cosine_sim = vec_sim(data)
 
     # Initializing the empty list of recommended movies
     recommended_movies = []
