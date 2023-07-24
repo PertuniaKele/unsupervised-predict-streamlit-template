@@ -128,7 +128,7 @@ def main():
 
     # DO NOT REMOVE the 'Recommender System' option below, however,
     # you are welcome to add more options to enrich your app.
-    page_options = ["Recommender System","❓ Instructions","🎥 Movies","🧑‍🤝‍🧑 Users","⭐ Solution Overview","🐝 About Us"]
+    page_options = ["Recommender System","❓ Instructions","🎥 Movies","🧑‍🤝‍🧑 Users","🐝 About Us"] #,"⭐ Solution Overview"
 
     # -------------------------------------------------------------------
     # ----------- !! THIS CODE MUST NOT BE ALTERED !! -------------------
@@ -194,8 +194,8 @@ def main():
         with tab1:
 
             st.subheader("Overview")
-            st.markdown("The Movie Recommendation System was developed as an unsupervised learning project. It provides the user with personalised movie recommendations based on their three favourite movies.")
-            st.markdown("The user can select between two methods of recommendation algorithms being content-based filtering and collaborative-based filtering which are further detailed below.")
+            st.markdown("The BUZZflix™️ Movie Recommendation System was developed as an unsupervised learning project. It provides the user with personalised movie recommendations based on three movies they have selected.")
+            st.markdown("The user can select between two methods of recommendation algorithms being content-based filtering and collaborative-based filtering which will be detailed further below.")
             #st.markdown("#")
 
             st.subheader("Algorithms Investigated")
@@ -217,9 +217,13 @@ def main():
             #st.subheader("Recommendations")
             st.subheader("")
             st.markdown("- Navigate to the 'Recommender System' page.")
+            st.markdown("")
             st.markdown("- Choose a recommendation algorithm from the provided options.")
+            st.markdown("")
             st.markdown("- Select a movie that is one of your favourites from each drop-down selectbox (Three movies in total).")
+            st.markdown("")
             st.markdown("- Click the 'Recommend' button.")
+            st.markdown("")
             st.markdown("- The selected algorithm will be used to generate 10 movie recommendations based on your favourite movies.")
 
         with tab3:
@@ -228,9 +232,15 @@ def main():
             #st.subheader("Movie Insights")
             st.subheader("")
             st.markdown("- Navigate to the '🎥 Movies' page.")
-            st.markdown("- Use the 'Select Year Range' slider and the 'Select Genres' multi-select box to filter the Genre Distribution graph by years and genres respectively.")
+            st.markdown("")
+            st.markdown("- Use the 'Filter by Year' slider to select a period by which the Genre Distribution graph will be filtered.")
+            st.markdown("")
+            st.markdown("- Use the multi-selectbox denoted by 'Filter by Genre' to filter the Genre Distribution graph according to the genres selected.")
+            st.markdown("")
             st.markdown("- You can also make use of the Genre Presets located in the sidebar on the left to filter the graph according to preconstructed groups of genres.")
-            st.markdown("- There is a Movie dataframe located beneath the above mentioned graph displaying all movies present in the database.")
+            st.markdown("")
+            st.markdown("- Below the Genre Distribution bar graph, there is a dataframe that displays all movies present in the database.")
+            st.markdown("")
             st.markdown("- If one wishes to filter the dataframe by using the presets, tick the 'Filter Dataframe' checkbox and then select the preset you wish to filter by.")
 
         with tab4:
@@ -239,11 +249,15 @@ def main():
             #st.subheader("User Insights")
             st.subheader("")
             st.markdown("- Navigate to the '🧑‍🤝‍🧑 Users' page.")
-            st.markdown("- Use the 'Select Year Range' slider to filter the User Ratings Distribution graph.")
-            st.markdown("- The 'Top 30 Users' dataframe displays the users that have provided the highest number of ratings.")
+            st.markdown("")
+            #st.markdown("- Use the 'Select Year Range' slider to filter the User Ratings Distribution graph.")
+            st.markdown("- Use the 'Filter by Year' slider to select a period by which the User Rating Distribution graph will be filtered.")
+            st.markdown("")
+            st.markdown("- Use the 'Show Top 30 Active Users' checkbox to display a dataframe that highlights the top 30 users that have given the most ratings.")
+            #st.markdown("- The 'Top 30 Users' dataframe displays the users that have provided the highest number of ratings.")
 
     if page_selection == "🎥 Movies":
-        st.title(':movie_camera: Movie Database')
+        st.title(':movie_camera: Movies')
 
         movies_df, movie_train = movie_page()
 
@@ -337,7 +351,7 @@ def main():
 
     if page_selection == "🧑‍🤝‍🧑 Users":
         
-        st.title(":people_holding_hands: User Database")
+        st.title(":people_holding_hands: Users")
 
         st.subheader('User Ratings')
 
@@ -391,9 +405,9 @@ def main():
 
             st.dataframe(top_30, column_config={"userId": "User ID"}, use_container_width=True)#, hide_index=True)
     
-    if page_selection == "⭐ Solution Overview":
-        st.title("Solution Overview")
-        st.write("Describe your winning approach on this page")
+    #if page_selection == "⭐ Solution Overview":
+    #    st.title("Solution Overview")
+    #    st.write("Describe your winning approach on this page")
 
     if page_selection == "🐝 About Us":
         st.title(":honeybee: BUZZHIVE Analytics")
