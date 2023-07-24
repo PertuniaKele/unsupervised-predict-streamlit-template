@@ -117,6 +117,11 @@ def convert_to_stars(rating):
         return stars
     else:
         return np.nan
+    
+#def filter_top_users(df, selected_rating):
+#    filtered_users = df[df['rating'] == selected_rating]
+#    top_users = filtered_users.nlargest(5, 'number_of_ratings', keep='all').sort_index()
+#    return top_users
 
 # App declaration
 def main():
@@ -179,50 +184,6 @@ def main():
 
     # ------------- SAFE FOR ALTERING/EXTENSION -------------------
     
-    #if page_selection == "❓ Instructions":
-    #    st.title(":question: Overview and Instructions")
-
-    #    col1, col2, col3 = st.columns((1.8,0.2,1.3))
-
-    #    col1.subheader("Overview")
-    #    col1.markdown("The Movie Recommendation System was developed as an unsupervised learning project. It provides the user with personalised movie recommendations based on their three favourite movies.")
-    #    col1.markdown("The user can select between two methods of recommendation algorithms being content-based filtering and collaborative-based filtering.")
-    #    st.markdown("#")
-
-    #    col1.subheader("Algorithms Investigated")
-
-    #    col1.markdown("- Content-based Filtering")
-    #    col1.markdown("Content-based algorithms analyse movie features to discern similarities to make appropriate suggestions. Features can include, but are not limited to, genre, the director and the acting cast for example.")
-
-    #    col1.markdown("- Collaborative-based Filtering")
-    #    col1.markdown("Collaborative-based algorithms are slightly more intricate as they recommend movies based on similarities between users and/or the movies themselves. Collaborative algorithms can take the form of memory-based or model-based methods.")
-    #    col1.markdown("Memory-based techniques utilise explicit user data, such as ratings, to determine similarities while model-based techniques use algorithms such as Singular Value Decomposition (SVD) to estimate how likely a user would be interested in a movie they have not seen before.")   
-    #    col1.markdown("The collaborative filtering algorithm, used in the BUZZflix™️ application, is a model based approach using a specially trained SVD model.")
-
-    #    col3.info("How to Use", icon="ℹ️")
-
-        # Recommendations
-    #    col3.subheader("Recommendations")
-    #    col3.markdown("- Navigate to the 'Recommender System' page.")
-    #    col3.markdown("- Choose a recommendation algorithm from the provided options.")
-    #    col3.markdown("- Select a movie that is one of your favourites from each drop-down selectbox (Three movies in total).")
-    #    col3.markdown("- Click the 'Recommend' button.")
-    #    col3.markdown("- The selected algorithm will be used to generate 10 movie recommendations based on your favourite movies.")
-
-        # Movie Insights
-    #    col3.subheader("Movie Insights")
-    #    col3.markdown("- Navigate to the '🎥 Movies' page.")
-    #    col3.markdown("- Use the 'Select Year Range' slider and the 'Select Genres' multi-select box to filter the Genre Distribution graph by years and genres respectively.")
-    #    col3.markdown("- You can also make use of the Genre Presets located in the sidebar on the left to filter the graph according to preconstructed groups of genres.")
-    #    col3.markdown("- There is a Movie dataframe located beneath the above mentioned graph displaying all movies present in the database.")
-    #    col3.markdown("- If one wishes to filter the dataframe by using the presets, tick the 'Filter Dataframe' checkbox and then select the preset you wish to filter by.")
-
-        # User Insights
-    #    col3.subheader("User Insights")
-    #    col3.markdown("- Navigate to the '🧑‍🤝‍🧑 Users' page.")
-    #    col3.markdown("- Use the 'Select Year Range' slider to filter the User Ratings Distribution graph.")
-    #    col3.markdown("- The 'Top 30 Users' dataframe displays the users that have provided the highest number of ratings.")
-
     if page_selection == "❓ Instructions":
         st.title(":question: Overview and Instructions")
 
@@ -246,7 +207,7 @@ def main():
             st.markdown("- Collaborative-based Filtering")
             st.markdown("Collaborative-based algorithms are slightly more intricate as they recommend movies based on similarities between users and/or the movies themselves. Collaborative algorithms can take the form of memory-based or model-based methods.")
             st.markdown("Memory-based techniques utilise explicit user data, such as ratings, to determine similarities while model-based techniques use algorithms such as Singular Value Decomposition (SVD) to estimate how likely a user would be interested in a movie they have not seen before.")   
-            st.markdown("The collaborative filtering algorithm, used in the BUZZflix™️ application, is a model based approach using a specially trained SVD model.")
+            st.markdown("The collaborative filtering algorithm, used in the BUZZflix™️ application, is a model based approach using a specially trained K-Nearest Neighbours (KNN) model.")
 
         #col3.info("How to Use", icon="ℹ️")
 
@@ -286,8 +247,10 @@ def main():
 
         movies_df, movie_train = movie_page()
 
+        st.markdown("#### Filter by Year")
+        #st.subheader("Filter by Year")
         year_range = (int(movies_df['year'].min()), int(movies_df['year'].max()))
-        selected_year = st.slider('Select Year', min_value=year_range[0], max_value=year_range[1], value=year_range)
+        selected_year = st.slider('Filter by Year', min_value=year_range[0], max_value=year_range[1], value=year_range, label_visibility="collapsed")
 
         default_genres = movies_df['genres_split'].unique()
 
@@ -299,8 +262,10 @@ def main():
 
         suspense_preset = ["Crime","Horror","Thriller", "Mystery"]
 
+
+        st.markdown("#### Filter by Genre")
         placeholder = st.empty()
-        selected_genres = placeholder.multiselect('Select Genres', default_genres, default=movies_df['genres_split'].unique(), key="msd")
+        selected_genres = placeholder.multiselect('Filter by Genre', default_genres, default=movies_df['genres_split'].unique(), key="msd", label_visibility="collapsed")
 
         filter_genres = default_genres
 
@@ -308,29 +273,29 @@ def main():
 
         if st.sidebar.button("🌀 Reset Genres", use_container_width=True):
             placeholder.empty()
-            selected_genres = placeholder.multiselect('Select Genres', default_genres, default=movies_df['genres_split'].unique(), key="msreset")
+            selected_genres = placeholder.multiselect('Filter by Genre', default_genres, default=movies_df['genres_split'].unique(), key="msreset", label_visibility="collapsed")
             filter_genres = default_genres
 
         st.sidebar.markdown("# Genre Presets")
 
         if st.sidebar.button("👨‍👩‍👦 Family", use_container_width=True):
             placeholder.empty()
-            selected_genres = placeholder.multiselect('Select Genres', default_genres, default=family_preset, key="msfam")
+            selected_genres = placeholder.multiselect('Filter by Genre', default_genres, default=family_preset, key="msfam", label_visibility="collapsed")
             filter_genres = family_preset
             
         if st.sidebar.button("⚔️ Action", use_container_width=True): #"💥"
             placeholder.empty()
-            selected_genres = placeholder.multiselect('Select Genres', default_genres, default=action_preset, key="msact")
+            selected_genres = placeholder.multiselect('Filter by Genre', default_genres, default=action_preset, key="msact", label_visibility="collapsed")
             filter_genres = action_preset
 
         if st.sidebar.button("💖 Romance", use_container_width=True):
             placeholder.empty()
-            selected_genres = placeholder.multiselect('Select Genres', default_genres, default=romance_preset, key="msrom")
+            selected_genres = placeholder.multiselect('Filter by Genre', default_genres, default=romance_preset, key="msrom", label_visibility="collapsed")
             filter_genres = romance_preset
 
         if st.sidebar.button("🔪 Suspense", use_container_width=True):
             placeholder.empty()
-            selected_genres = placeholder.multiselect('Select Genres', default_genres, default=suspense_preset, key="mssus")
+            selected_genres = placeholder.multiselect('Filter by Genre', default_genres, default=suspense_preset, key="mssus", label_visibility="collapsed")
             filter_genres = suspense_preset
 
         out_year = movies_df["year"].isin(range(selected_year[0], selected_year[1]))
@@ -345,10 +310,10 @@ def main():
         ax.tick_params(axis='y', labelsize=7)
         ax.tick_params(axis='x', labelsize=8)
 
-        plt.xlabel('')
-        plt.ylabel('Number of Movies')
-        plt.title(f'Movie Genre Distribution between {selected_year}')
-        plt.xticks(rotation=90)
+        plt.xlabel('', fontsize=9)
+        plt.ylabel('Number of Movies', fontsize=9)
+        plt.title(f'Movie Genre Distribution between {selected_year}', fontsize=10)
+        plt.xticks(rotation=90, fontsize=8)
         st.pyplot(plt)
 
         col1, col2, col3 = st.columns((2,2,2))
@@ -376,6 +341,7 @@ def main():
 
         st.subheader('User Ratings')
 
+        #train_data, top_30, group_train = user_page()
         train_data, top_30 = user_page()
 
         year_range_train = (int(train_data['Year'].min()), int(train_data['Year'].max()))
@@ -386,26 +352,44 @@ def main():
         filtered_train = train_data[out_year_train]
 
         plt.figure(figsize=(8, 4))
-        ax = sns.countplot(data=filtered_train, x='rating', palette='viridis')#, order=train_data['rating'].value_counts())
+        ax = sns.countplot(data=filtered_train, x='rating', palette="RdYlGn") #palette='viridis')#, order=train_data['rating'].value_counts())
 
         ax.set_yticklabels([])
 
         for label in ax.containers:
             #ax.bar_label(label, fmt="%.f%%")
-            ax.bar_label(label, fmt="{:.0f}")
+            ax.bar_label(label, fmt="{:.0f}", fontsize=8)
 
-        plt.xlabel('Rating Category')
-        plt.ylabel('Count')
-        plt.title(f'User Rating Distribution between {selected_year_train}')
-        plt.xticks(rotation=0)
+        plt.xlabel('Rating Category', fontsize=9)
+        plt.ylabel('Count', fontsize=9)
+        plt.title(f'User Rating Distribution between {selected_year_train}', fontsize=10)
+        plt.xticks(rotation=0, fontsize=8)
         st.pyplot(plt)
 
-        st.subheader("Top 30 Users")
+        #selected_rating = st.selectbox('Rating Category', train_data["rating"].unique())
 
-        top_30['Average Rating'] = top_30['average_rating'].apply(convert_to_stars)
-        top_30.drop("average_rating", inplace=True, axis=1)
+        #top_5 = filter_top_users(train_data, selected_rating)
 
-        st.dataframe(top_30, column_config={"userId": "User ID"}, hide_index=True, use_container_width=True)
+        #st.title('Top 5 Users for Selected Rating Category')
+        #st.subheader('Select a Rating Category:')   
+        #st.write(f'Selected Rating Category: {selected_rating}')
+
+        #filtered_users_df = filter_top_users(selected_rating)
+
+        #st.dataframe(top_5)
+
+        show_users = st.checkbox("Show Top 30 Active Users")
+
+        if show_users:
+
+            st.subheader("Top 30 Active Users")
+
+            top_30['Average Rating'] = top_30['average_rating'].apply(convert_to_stars)
+            top_30.drop("average_rating", inplace=True, axis=1)
+            top_30.index += 1
+            #top_30.reset_index(drop=True, inplace=True)
+
+            st.dataframe(top_30, column_config={"userId": "User ID"}, use_container_width=True)#, hide_index=True)
     
     if page_selection == "⭐ Solution Overview":
         st.title("Solution Overview")
@@ -413,7 +397,8 @@ def main():
 
     if page_selection == "🐝 About Us":
         st.title(":honeybee: BUZZHIVE Analytics")
-        st.image('resources/imgs/our_app.jpg',use_column_width=True)
+        #st.image('resources/imgs/our_app.jpg',use_column_width=True)
+        st.image('resources/imgs/our_app.jpg', width=750)
         st.markdown('') 
         st.markdown("Watching a movie is fun, but finding a good movie is a time-consuming experience.")  
         st.markdown("You scroll endless entertainment streaming sites, watch trailers, but you still can't decide what to watch. Ring a bell? :bell:")

@@ -221,7 +221,8 @@ def collab_model(movie_list,top_n=10):
 
     time2 = time()
 
-    print("Time it takes:", time2-time1)
+    print("Time to pivot:", time2-time1)
+    print("Pivot shape:", ratings.shape)
 
     ratings.fillna(0, inplace=True)
     csr_data = csr_matrix(ratings.values)
@@ -242,7 +243,9 @@ def collab_model(movie_list,top_n=10):
 
     sorted_recs = all_recommendations.sort_values(by="Distance", ascending=False)
 
-    recommended_movies = list(sorted_recs['Title'][:10])
+    recs_no_dups = sorted_recs.drop_duplicates(subset='Title', keep='first')
+
+    recommended_movies = list(recs_no_dups['Title'][:10])
 
     #rec1 = get_movie_recommendation(ratings, "Iron Man (2008)", model, csr_data)
 
@@ -265,11 +268,11 @@ def get_movie_recommendation(ratings, movie_name, knn, csr_data):
         
         movie_idx = movie_list.iloc[0]['movieId']
         
-        print("Movie idx 1:", movie_idx)
+        #print("Movie idx 1:", movie_idx)
 
         movie_idx = ratings[ratings['movieId'] == movie_idx].index[0]
 
-        print("Movie idx 2:", movie_idx)
+        #print("Movie idx 2:", movie_idx)
         
         distances , indices = knn.kneighbors(csr_data[movie_idx],n_neighbors=n_movies_to_recommend+1)
 
