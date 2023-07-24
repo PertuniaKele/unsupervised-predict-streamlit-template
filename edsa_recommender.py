@@ -276,9 +276,10 @@ def main():
 
         suspense_preset = ["Crime","Horror","Thriller", "Mystery"]
 
+        col1, col2, col3 = st.columns((0.5,0.5,3))
 
-        st.markdown("#### Filter by Genre")
-        placeholder = st.empty()
+        col1.markdown("#### Filter by Genre")
+        placeholder = col1.empty()
         selected_genres = placeholder.multiselect('Filter by Genre', default_genres, default=movies_df['genres_split'].unique(), key="msd", label_visibility="collapsed")
 
         filter_genres = default_genres
@@ -328,7 +329,7 @@ def main():
         plt.ylabel('Number of Movies', fontsize=9)
         plt.title(f'Movie Genre Distribution between {selected_year}', fontsize=10)
         plt.xticks(rotation=90, fontsize=8)
-        st.pyplot(plt)
+        col3.pyplot(plt)
 
         col1, col2, col3 = st.columns((2,2,2))
 
@@ -358,8 +359,9 @@ def main():
         #train_data, top_30, group_train = user_page()
         train_data, top_30 = user_page()
 
+        st.markdown("#### Filter by Year")
         year_range_train = (int(train_data['Year'].min()), int(train_data['Year'].max()))
-        selected_year_train = st.slider('Select Year', min_value=year_range_train[0], max_value=year_range_train[1], value=year_range_train)
+        selected_year_train = st.slider('Select Year', min_value=year_range_train[0], max_value=year_range_train[1], value=year_range_train, label_visibility="collapsed")
 
         out_year_train = train_data['Year'].isin(range(selected_year_train[0], selected_year_train[1]))
 
@@ -374,11 +376,13 @@ def main():
             #ax.bar_label(label, fmt="%.f%%")
             ax.bar_label(label, fmt="{:.0f}", fontsize=8)
 
+        col1, col2, col3 = st.columns((1,4,1))
+
         plt.xlabel('Rating Category', fontsize=9)
         plt.ylabel('Count', fontsize=9)
         plt.title(f'User Rating Distribution between {selected_year_train}', fontsize=10)
         plt.xticks(rotation=0, fontsize=8)
-        st.pyplot(plt)
+        col2.pyplot(plt)
 
         #selected_rating = st.selectbox('Rating Category', train_data["rating"].unique())
 
@@ -410,44 +414,53 @@ def main():
     #    st.write("Describe your winning approach on this page")
 
     if page_selection == "🐝 About Us":
-        st.title(":honeybee: BUZZHIVE Analytics")
-        #st.image('resources/imgs/our_app.jpg',use_column_width=True)
-        st.image('resources/imgs/our_app.jpg', width=750)
-        st.markdown('') 
-        st.markdown("Watching a movie is fun, but finding a good movie is a time-consuming experience.")  
-        st.markdown("You scroll endless entertainment streaming sites, watch trailers, but you still can't decide what to watch. Ring a bell? :bell:")
-        st.markdown("BUZZHIVE Analytics' Recommendation System, BUZZflix™️ has your back!")
-        st.markdown("It answers the burning 🔥 question so many of us have, 'What to watch next?'")
-        st.markdown("Say goodbye to searching and spend more time watching. Say hello to an on-demand Movie Recommendation System that generates personalised movie recommendations to you and for you.") 
-        #st.markdown("")
         
-        st.header('Why choose BUZZflix™️?') 
-        st.markdown(" - Sleek user interface and easy to use.")
-        st.markdown(" - Fast loading time and high accuracy.")
-        #st.markdown(" - OUR APP asks the user to select three favourite movies, and then recommends ten movies similar to their favourite movies. ")
-        st.markdown(" - You choose your preferred recommendation method, content-based filtering or collaborative-based filtering.")
-         
-        st.header('BUZZHIVE Team')
+        st.title(":honeybee: We are BUZZHIVE Analytics!")
+        #st.image('resources/imgs/our_app.jpg',use_column_width=True)
+        st.markdown('') 
 
-        #st.markdown(" - Kwena Matlala")
+        col1, col2 = st.columns((1,1))
 
-        st.subheader("Team Lead and Head Data Scientist")
-        st.markdown("Pertunia Nhlapo - pertuniantuliz@gmail.com")
+        col2.image('resources/imgs/our_app.jpg')#, width=800)
+        col1.markdown('')
+        col1.markdown('') 
+        col1.markdown("Watching a movie is fun, but finding a good movie is a time-consuming experience.")  
+        col1.markdown("You scroll endless entertainment streaming sites, watch trailers, but you still can't decide what to watch. Ring a bell? :bell:")
+        col1.markdown("BUZZHIVE Analytics' Recommendation System, BUZZflix™️ has your back!")
+        col1.markdown("It answers the burning 🔥 question so many of us have, 'What to watch next?'")
+        col1.markdown("Say goodbye to searching and spend more time watching. Say hello to an on-demand Movie Recommendation System that generates personalised movie recommendations to you and for you.") 
+        col1.markdown('')
+        col1.markdown('')
 
-        st.subheader("Vice Lead and Lead Data Engineer")
-        st.markdown("Chesley Rogerson - ckrogerson@gmail.com")
+        col1.header('Why choose BUZZflix™️?') 
+        col1.markdown(" - Sleek user interface and easy to use.")
+        col1.markdown(" - Fast loading time and high accuracy.")
+        col1.markdown(" - You choose your preferred recommendation method, content-based filtering or collaborative-based filtering.")
+        
+        #col1, col2, col3 = st.columns((1,1,1))
 
-        st.subheader("Data Scientist")
-        st.markdown("Onalenna Borakano - oborakano@gmail.com")
+        st.sidebar.title('BUZZHIVE Team')
 
-        st.subheader("Data Engineer")
-        st.markdown("Xolisile Sibiya - xolisbiya203@gmail.com")
+        st.sidebar.subheader("Team Lead and Head Data Scientist")
+        st.sidebar.markdown("Pertunia Nhlapo - pertuniantuliz@gmail.com")
 
-        st.subheader("Domain Expert")
-        st.markdown("Seema Masekwameng - khutso.km@gmail.com")
+        st.sidebar.subheader("Vice Lead and Lead Data Engineer")
+        st.sidebar.markdown("Chesley Rogerson - ckrogerson@gmail.com")
 
-        st.subheader("Communications Specialist")
-        st.markdown("Fridar Diale - fridar.mf@gmail.com")
+        st.sidebar.subheader("Data Scientist")
+        st.sidebar.markdown("Onalenna Borakano - oborakano@gmail.com")
+
+        st.sidebar.subheader("Data Scientist")
+        st.sidebar.markdown("Kwena Matlala - kwenamatlala19@gmail.com")
+
+        st.sidebar.subheader("Data Engineer")
+        st.sidebar.markdown("Xolisile Sibiya - xolisbiya203@gmail.com")
+
+        st.sidebar.subheader("Domain Expert")
+        st.sidebar.markdown("Seema Masekwameng - khutso.km@gmail.com")
+
+        st.sidebar.subheader("Communications Specialist")
+        st.sidebar.markdown("Fridar Diale - fridar.mf@gmail.com")
 
     # You may want to add more sections here for aspects such as an EDA,
     # or to provide your business pitch.

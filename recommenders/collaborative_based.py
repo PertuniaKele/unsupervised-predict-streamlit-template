@@ -213,16 +213,16 @@ def collab_model(movie_list,top_n=10):
     #    movie_title = look_movieId.iloc[0]['title']
     #    recommended_movies.append(movie_title)
 
-    time1 = time()
+    #time1 = time()
 
-    print("TIME:", time1)
+    #print("TIME:", time1)
 
     ratings = subset_train_df.pivot_table(index='movieId', columns='userId', values='rating')
 
-    time2 = time()
+    #time2 = time()
 
-    print("Time to pivot:", time2-time1)
-    print("Pivot shape:", ratings.shape)
+    #print("Time to pivot:", time2-time1)
+    #print("Pivot shape:", ratings.shape)
 
     ratings.fillna(0, inplace=True)
     csr_data = csr_matrix(ratings.values)
@@ -245,6 +245,8 @@ def collab_model(movie_list,top_n=10):
 
     recs_no_dups = sorted_recs.drop_duplicates(subset='Title', keep='first')
 
+    recs_no_dups = recs_no_dups[~recs_no_dups['Title'].isin(movie_list)]
+
     recommended_movies = list(recs_no_dups['Title'][:10])
 
     #rec1 = get_movie_recommendation(ratings, "Iron Man (2008)", model, csr_data)
@@ -257,12 +259,12 @@ def get_movie_recommendation(ratings, movie_name, knn, csr_data):
     
     n_movies_to_recommend = 10
     
-    print("Movie name:", movie_name)
+    #print("Movie name:", movie_name)
 
     movie_list = movies_df[movies_df['title'].str.contains(movie_name, regex=False)]
     
-    print("Movie list:")
-    print(movie_list)
+    #print("Movie list:")
+    #print(movie_list)
 
     if len(movie_list):
         
