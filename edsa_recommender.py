@@ -196,18 +196,27 @@ def main():
             st.subheader("Overview")
             st.markdown("The BUZZflix™️ Movie Recommendation System was developed as an unsupervised learning project. It provides the user with personalised movie recommendations based on three movies they have selected.")
             st.markdown("The user can select between two methods of recommendation algorithms being content-based filtering and collaborative-based filtering which will be detailed further below.")
-            #st.markdown("#")
+            st.markdown("#")
 
             st.subheader("Algorithms Investigated")
 
             st.markdown("- Content-based Filtering")
-            st.markdown("Content-based algorithms analyse movie features to discern similarities to make appropriate suggestions.")
-            st.markdown("Features can include, but are not limited to, genre, the director and the acting cast for example.")
+            #st.markdown("Content-based algorithms analyse movie features to discern similarities to make appropriate suggestions.")
+            #st.markdown("Features can include, but are not limited to, genre, the director and the acting cast for example.")
+            st.markdown("At the heart of Content-Based algorithms lies a clever analysis of movie features to uncover meaningful similarities and make personalized movie suggestions tailored just for you. These algorithms go beyond simple genres. They delve into a treasure trove of characteristics, such as the director's vision, the captivating cast, and even the thematic elements that form the essence of each movie.")
+            st.markdown("By understanding what makes a movie truly unique, Content-Based filtering ensures that your recommendations align perfectly with your preferences, immersing you in a world of cinematic wonders that captivates the imagination.")
+            st.markdown("#")
 
+            #st.markdown("- Collaborative-based Filtering")
+            #st.markdown("Collaborative-based algorithms are slightly more intricate as they recommend movies based on similarities between users and/or the movies themselves. Collaborative algorithms can take the form of memory-based or model-based methods.")
+            #st.markdown("Memory-based techniques utilise explicit user data, such as ratings, to determine similarities while model-based techniques use algorithms such as Singular Value Decomposition (SVD) to estimate how likely a user would be interested in a movie they have not seen before.")   
+            #st.markdown("The collaborative filtering algorithm, used in the BUZZflix™️ application, is a model based approach using a specially trained K-Nearest Neighbours (KNN) model.")
+            
             st.markdown("- Collaborative-based Filtering")
             st.markdown("Collaborative-based algorithms are slightly more intricate as they recommend movies based on similarities between users and/or the movies themselves. Collaborative algorithms can take the form of memory-based or model-based methods.")
-            st.markdown("Memory-based techniques utilise explicit user data, such as ratings, to determine similarities while model-based techniques use algorithms such as Singular Value Decomposition (SVD) to estimate how likely a user would be interested in a movie they have not seen before.")   
-            st.markdown("The collaborative filtering algorithm, used in the BUZZflix™️ application, is a model based approach using a specially trained K-Nearest Neighbours (KNN) model.")
+            st.markdown("Memory-based techniques utilise explicit user data, such as ratings, to determine similarities while model-based techniques use algorithms such as Singular Value Decomposition (SVD) and K-Nearest Neighbours (KNN) to estimate how likely a user would be interested in a movie they have not seen before.")   
+            #st.markdown("The collaborative filtering algorithm, used in the BUZZflix™️ application, is a model based approach using a specially trained K-Nearest Neighbours (KNN) model.")
+            st.markdown("In the BUZZflix™️ application, we employ a highly sophisticated model-based Collaborative Filtering algorithm, utilizing a specially trained KNN model. This intricate approach takes into account the preferences of similar users, enabling us to recommend movies that align perfectly with your tastes and cinematic inclinations.")
 
         #col3.info("How to Use", icon="ℹ️")
 
@@ -276,7 +285,7 @@ def main():
 
         suspense_preset = ["Crime","Horror","Thriller", "Mystery"]
 
-        col1, col2, col3 = st.columns((0.5,0.5,3))
+        col1, col2, col3 = st.columns((0.8,0.2,3))
 
         col1.markdown("#### Filter by Genre")
         placeholder = col1.empty()
@@ -374,7 +383,8 @@ def main():
 
         for label in ax.containers:
             #ax.bar_label(label, fmt="%.f%%")
-            ax.bar_label(label, fmt="{:.0f}", fontsize=8)
+            #ax.bar_label(label, fmt="{:.0f}", fontsize=8)
+            ax.bar_label(label, labels=[f'{x:,.0f}' for x in label.datavalues] ,fontsize=8)
 
         col1, col2, col3 = st.columns((1,4,1))
 
@@ -419,24 +429,40 @@ def main():
         #st.image('resources/imgs/our_app.jpg',use_column_width=True)
         st.markdown('') 
 
-        col1, col2 = st.columns((1,1))
+        #col1, col2 = st.columns((1,1))
 
-        col2.image('resources/imgs/our_app.jpg')#, width=800)
-        col1.markdown('')
-        col1.markdown('') 
-        col1.markdown("Watching a movie is fun, but finding a good movie is a time-consuming experience.")  
-        col1.markdown("You scroll endless entertainment streaming sites, watch trailers, but you still can't decide what to watch. Ring a bell? :bell:")
-        col1.markdown("BUZZHIVE Analytics' Recommendation System, BUZZflix™️ has your back!")
-        col1.markdown("It answers the burning 🔥 question so many of us have, 'What to watch next?'")
-        col1.markdown("Say goodbye to searching and spend more time watching. Say hello to an on-demand Movie Recommendation System that generates personalised movie recommendations to you and for you.") 
-        col1.markdown('')
-        col1.markdown('')
+        st.markdown("Watching a movie is fun, but finding a good movie is a time-consuming experience.")  
+        st.markdown("You scroll endless entertainment streaming sites, watch trailers, but you still can't decide what to watch. Ring a bell? :bell:")
+        st.markdown("BUZZHIVE Analytics' Recommendation System, BUZZflix™️ has your back!")
+        st.markdown("It answers the burning 🔥 question so many of us have, 'What to watch next?'")
+        st.markdown("Say goodbye to searching and spend more time watching. Say hello to an on-demand Movie Recommendation System that generates personalised movie recommendations to you and for you.")
+        st.markdown('') 
 
-        col1.header('Why choose BUZZflix™️?') 
-        col1.markdown(" - Sleek user interface and easy to use.")
-        col1.markdown(" - Fast loading time and high accuracy.")
-        col1.markdown(" - You choose your preferred recommendation method, content-based filtering or collaborative-based filtering.")
+        st.image('resources/imgs/our_app.jpg', width=800)
+        st.markdown('')
+        #st.markdown('') 
         
+        st.header('Why choose BUZZflix™️?')
+
+        st.markdown('Personalization')
+        st.markdown('- We prioritize you and your unique tastes. Our Recommender System tailors movie recommendations to match your preferences, ensuring you discover movies that resonate with your interests.')
+        st.markdown('Intuitive Interface')
+        st.markdown("- We've designed BUZZflix with simplicity and ease of use in mind. From interactive graphs to intuitive sliders, our user-friendly interface makes your exploration a breeze.")
+        st.markdown('Data-Driven Insights')
+        st.markdown('- Dive into the depths of movie data and uncover intriguing insights. Our graphs and dataframes empower you with knowledge about genres, ratings, and user preferences.')
+        st.markdown('Community Spirit')
+        st.markdown('- BUZZflix thrives on community engagement. Connect with fellow movie enthusiasts, witness the collective ratings, and contribute to the cinematic conversation.')
+        st.markdown('Passionate Team')
+        st.markdown('- Behind the scenes, a team of dedicated individuals worked tirelessly to bring BUZZflix to life. Their love for movies and technology fueled the creation of this extraordinary application.')
+ 
+        #st.markdown(" - Sleek user interface and easy to use.")
+        #st.markdown(" - Fast loading time and high accuracy.")
+        #st.markdown(" - You choose your preferred recommendation method, content-based filtering or collaborative-based filtering.")
+        
+
+
+
+
         #col1, col2, col3 = st.columns((1,1,1))
 
         st.sidebar.title('BUZZHIVE Team')
