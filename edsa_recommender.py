@@ -52,7 +52,7 @@ title_list = load_movie_titles('resources/data/movies.csv')
 @st.cache_data
 def movie_page():
 
-    train_data = pd.read_csv("resources/data/train.csv")
+    train_data = pd.read_csv("resources/data/ratings.csv")
     movies = pd.read_csv("resources/data/movies.csv")
 
     movies['release_year'] = movies['title'].str.extract(r'\((\d{4})\)')
@@ -80,7 +80,7 @@ def movie_page():
 @st.cache_data
 def user_page():
 
-    train_df = pd.read_csv("resources/data/train.csv")
+    train_df = pd.read_csv("resources/data/ratings.csv")
 
     train_df['DateTime'] = pd.to_datetime(train_df['timestamp'], unit='s')
     train_df['Year'] = train_df['DateTime'].dt.year
